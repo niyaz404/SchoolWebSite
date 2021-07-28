@@ -1,0 +1,70 @@
+﻿@model MySchoolWebSite.Domains.Entities.Student;
+@{
+    ViewData["Title"] = "Профиль";
+}
+<body>
+    <script src="~/js/getRatingById.js" type="text/javascript">
+    </script>
+    <form>
+        <div class="div-photo">
+            @if (Model.ProfileImg != null)
+            {
+                <img src="@Model.ProfileImg" id="profilePhoto" />
+            }
+            else
+            {
+                <img src="https://vk-wiki.ru/wp-content/uploads/2019/04/male-user-profile-picture.png" id="profilePhoto" />
+            }
+        </div>
+        <div class="div-info">
+            <h2 id="studentName">@Model.FullName</h2>
+
+            @if (Model.ProfileImg != null)
+            {
+                <label id="studentInfo">@Model.Info
+                </label>
+            }
+            else
+            {
+                <label id="studentInfo">@*какая-нибудь информация*@
+                </label>
+            }
+        </div>
+        <div id="rating">
+            <h2 class="h2-black">Оценки ученика</h2>
+            <form method="post">
+                <div class="block">
+                    <label class="label20px">Выберите предмет:</label>
+                </div>
+                <div class="block">
+                    <select id="subjectSelect" size="1" required>
+                        <option disabled>Выберите предмет</option>
+                        @foreach (var item in ViewBag.Subjects)
+                        {
+                            <option value=@item.Id>@item.SubjectName</option>
+                        }
+                    </select>
+                </div>
+                <div class="block">
+                    <input type="button" class="showButton" onclick="getRatingById(@Model.Id)" value="Показать"/>
+                </div>
+            </form>
+            <div>
+                <table id="ratingTable" style="border: black solid 1px">
+                    <tr style="height: 40px">
+                        <th style="width: 200px">Дата</th>
+                        @for (int i = 1; i < 65; i++)
+                        {
+                            <td style="width: 30px; padding: 2px; border: black solid 1px">@i</td>
+                        }
+                    </tr>
+                    <tr id="marks" style="height: 40px">
+                        <th style="width: 30px; padding: 2px; border: black solid 1px">Оценка</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </form>
+</body>
+
+

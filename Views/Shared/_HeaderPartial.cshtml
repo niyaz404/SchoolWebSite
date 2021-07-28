@@ -1,0 +1,29 @@
+﻿@using MySchoolWebSite.Service
+<!-- Header -->
+<div id="header-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <header id="header">
+                    <h1><a asp-controller="" asp-action="" id="logo">
+                        @if (Config.SchoolName != null)
+                        {
+                            @Config.SchoolName
+                        }
+                        else
+                        {
+                            @ViewBag.Title
+                        }
+                    </a></h1>
+                    <nav id="nav">
+                        <a asp-controller="" asp-action="" >Главная</a>
+                        <a asp-controller="Students" asp-action="List">Списки учеников</a>
+                        <a asp-controller="Rating" asp-action="Marks">Журнал оценок</a>
+                        <a asp-controller="Account" asp-action="Login" >Войти</a>
+                    </nav>
+
+                </header>
+            </div>
+        </div>
+    </div>
+</div>

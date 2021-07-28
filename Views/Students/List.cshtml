@@ -1,0 +1,37 @@
+﻿<!DOCTYPE HTML>
+@{
+    Layout = "_Layout";
+}
+@{
+    ViewData["Title"] = "Список учеников";
+}
+
+<body class="main-body">
+    <script src="~/js/getStudentsList.js" type="text/javascript">
+    </script>
+    <form method="post">
+        <div class="block">
+            <label class="label20px">Выберите класс:</label>
+        </div>
+        <div class="block">
+            <select id="selectId" size="1" required>
+                <option disabled>Выберите класс</option>
+                @foreach (var item in ViewBag.Classes)
+                {
+                    <option value=@item.Id>@item.ClassName</option>
+                }
+            </select>
+        </div>
+        <div class="block">
+            <input type="button" class="showButton" onclick="getStudentsList()" value="Показать" />
+        </div>
+    </form>
+<label id="json"></label>
+<div>
+    <h2 id="classHeader"></h2>
+</div>
+<div>
+    <ol class="ol-students" id="resultList"></ol>
+</div>
+</body>
+

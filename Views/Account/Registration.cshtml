@@ -1,0 +1,68 @@
+﻿@model MySchoolWebSite.ViewModels.RegistrationModel
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<h2>Регистрация пользователя</h2>
+
+<form asp-action="Registration" asp-controller="Account" asp-anti-forgery="true">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
+    <div>
+        <div class="form-group">
+            <label asp-for="Email">Введите Email</label><br />
+
+        </div>
+        <div class="form-group">
+            <input type="text" asp-for="Email" />
+            <span asp-validation-for="Email" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Password">Введите пароль</label><br />
+        </div>
+        <div class="form-group">
+            <input asp-for="Password" />
+            <span asp-validation-for="Password" />
+        </div>
+        <div class="form-group">
+            <label asp-for="ConfirmPassword">Повторите пароль</label><br />
+        </div>
+        <div class="form-group">
+            <input asp-for="ConfirmPassword" />
+            <span asp-validation-for="ConfirmPassword" />
+        </div>
+        <div class="form-group">
+            <p>Присвоить пользователю роль:</p>
+            <div>
+                @foreach (var item in ViewBag.Roles)
+                {
+                    <input type="radio" asp-for="RoleId" value="@item.Id" />@item.Name<br />
+                }
+            </div>
+            @*<div>
+                <input asp-for="RoleId" type="radio" id="roleChoice" class="input-roleChoice"
+                       name="role" value="1">
+                <span asp-validation-for="RoleId" />
+                <label asp-for="RoleId">admin</label>
+
+                <input asp-for="RoleId" type="radio" id="roleChoice" class="input-roleChoice"
+                       name="role" value="2">
+                <span asp-validation-for="RoleId" />
+                <label asp-for="RoleId">Директор</label>
+
+                <input asp-for="RoleId" type="radio" id="roleChoice" class="input-roleChoice"
+                       name="role" value="3">
+                <label asp-for="RoleId">Завуч</label>
+                <input asp-for="RoleId" type="radio" id="roleChoice" class="input-roleChoice"
+                       name="role" value="4">
+                <label asp-for="RoleId">Учитель</label>
+                <input asp-for="RoleId" type="radio" id="roleChoice" class="input-roleChoice"
+                       name="role" value="5">
+                <label asp-for="RoleId">Ученик</label>
+            </div>*@
+            <div>
+                <button type="submit" >Зарегистрировать</button>
+            </div>
+        </div>
+    </div>
+</form>
+

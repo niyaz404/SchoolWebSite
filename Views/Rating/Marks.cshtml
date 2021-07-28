@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewData["Title"] = "Оценки";
+}
+
+<h1>Оценки учащихся</h1>
+<body class="main-body">
+    <script src="~/js/getRatingBySubject.js" type="text/javascript">
+    </script>
+    <form method="post">
+        <div class="block">
+            <label class="label20px">Выберите класс:</label>
+        </div>
+        <div class="block">
+            <select name="selectClassId" id="selectClassId" size="1" required onchange="fillSubjectSelect(selectClassId.value)">
+                <option disabled>Выберите класс</option>
+                @foreach (var item in ViewBag.Classes)
+                {
+                    <option value=@item.Id>@item.ClassName</option>
+                }
+            </select>
+        </div>
+        <div class="block">
+            <label class="label20px">Выберите предмет:</label>
+        </div>
+        <div id="div-subjectChoice" class="block">
+            <select id="selectSubjectId" size="1" required>
+                <option disabled>Выберите предмет</option>
+                @foreach (var item in ViewBag.Subjects)
+                {
+                    <option value=@item.SubjectId>@item.SubjectName</option>
+                }
+            </select>
+        </div>
+        <div class="block">
+            <input type="button" class="showButton" onclick="getRatingBySubject(selectClassId.value,selectSubjectId.value)" value="Показать" />
+        </div>
+    </form>
+    <div style="overflow-x: scroll">
+        <table class="marksTableClass" id="marksTable" style="border: black solid 1px; overflow: scroll">
+            <tr style="height: 30px">
+                <th style="width: 400px"></th>
+                @for (int i = 0; i < 64; i++)
+                {
+                    <td style="width: 30px; padding: 2px; border: black solid 1px"> @(i+1)</td>
+                }
+            </tr>
+        </table>
+        <script src="~/js/lib/scripts.min.js" asp-append-version="true"></script>
+        <script type="text/javascript" async="true">
+            $('.marksTableClass').on('click', '.edit', function () {
+                $this = $(this);
+                $this.find('div').hide();
+                $input = $this.find('input').show().focus();
+            });
+            $('.marksTableClass').on('focusout', '.edit input', function () {
+                var $input = $(this).hide();
+                var $tr = $input.closest('tr');
+                var $td = $input.closest('td');
+                var $table = $tr.closest('table');
+                var defaultValue = $input[0].defaultValue;
+                var newValue = $input.val();
+                var $div = $td.find('div').text($input.val()).show();
+
+                if (defaultValue === newValue) {
+                    return false;
+                };
+
+                function isEmpty(str) {
+                    return (!str || 0 === str.length);
+                }
+                function fail() {
+                    $div.text(defaultValue);
+                    $input.val(defaultValue);
+                    alert("Не удалось внести изменения. Возможно у вас нет прав вносить изменения или вносимые данные некорректны.");
+                }
+                
+                if (!isEmpty(defaultValue)) {
+                    $.post('/Rating/UpdateMark/',
+                        {
+                            id: $td.data('id'),
+                            value: newValue
+                        }).done(function(data) {
+                        if (data === 'ok') {
+                            $input[0].defaultValue = newValue;
+                        } else {
+                            fail();
+                        }
+                    }).fail(fail)
+                } else {
+
+                    $.post('/Rating/PostMark/', { 
+                            id: $td.data('id'),
+                        value: newValue
+                    }).done(function (data) {
+                        console.log(data);
+                        if(data==='ok'){
+                            $input[0].defaultValue = newValue;
+                        } else {
+                                fail();
+                        }
+                    }).fail(fail)
+                }
+               
+            })
+        </script>
+    </div>
+</body>
